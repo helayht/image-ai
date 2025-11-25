@@ -25,14 +25,14 @@ ai:
     chat-glm: 78d76d30bd1948899167a0bd85bab9bd.IhrSn6lWqAF6ahyO
     doubao: dd05458e-919e-435d-873e-ccc122a63375
 
+upload:
+  path: D:/Java_project/ImageAI/uploads
 
 spring:
   servlet:
     multipart:
       max-file-size: 20MB # 上传单个文件的最大大小
       max-request-size: 20MB # 上传多个文件时，所有文件的总大小上限
-  mvc:
-    static-path-pattern: /**
   web:
     resources:
-      static-locations: classpath:/static/,file:D:/Java_project/ImageAI/uploads/
+      static-locations: classpath:/static/,file:${upload.path}/

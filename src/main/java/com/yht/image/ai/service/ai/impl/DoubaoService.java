@@ -27,7 +27,7 @@ public class DoubaoService implements IAIService {
     @Override
     public ChatResultEntity creatImage(ChatRequestDTO chatRequestDTO) {
         GenerateImagesRequest generateRequest = GenerateImagesRequest.builder()
-                .model("doubao-seedream-4-0-250828") //Replace with Model ID .
+                .model("doubao-seedream-4-0-250828")
                 .prompt(chatRequestDTO.getPrompt())
                 .size(chatRequestDTO.getSize())
                 .sequentialImageGeneration("disabled")
@@ -39,7 +39,7 @@ public class DoubaoService implements IAIService {
         ChatResultEntity chatResultEntity = new ChatResultEntity();
         chatResultEntity.setImageURL(imagesResponse.getData().get(0).getUrl());
         chatResultEntity.setDateTime(new Date());
-        chatResultEntity.setModelId(chatResultEntity.getModelId());
+        chatResultEntity.setModelId("doubao-seedream-4-0");
         chatResultEntity.setModelName("豆包");
         client.shutdownExecutor();
         return chatResultEntity;

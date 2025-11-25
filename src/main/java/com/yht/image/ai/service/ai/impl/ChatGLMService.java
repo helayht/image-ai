@@ -36,7 +36,7 @@ public class ChatGLMService implements IAIService {
         ChatResultEntity chatResultEntity = new ChatResultEntity();
         chatResultEntity.setImageURL(response.getData().getData().get(0).getUrl());
         chatResultEntity.setDateTime(new Date());
-        chatResultEntity.setModelId(chatResultEntity.getModelId());
+        chatResultEntity.setModelId("cogview-3-flash");
         chatResultEntity.setModelName("智谱清言");
         return chatResultEntity;
     }

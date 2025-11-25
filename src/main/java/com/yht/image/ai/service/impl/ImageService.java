@@ -15,8 +15,10 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -39,6 +41,8 @@ public class ImageService implements IImageService {
 
     @Value("${server.domain}")
     private String serverDomain;
+    @Value("${upload.path}")
+    private String uploadPath;
 
     public ImageService(Map<String, IAIService> aiServiceMap, IRedisService redisService) {
         this.aiServiceMap = aiServiceMap;
@@ -109,15 +113,11 @@ public class ImageService implements IImageService {
         String s = filename.substring(filename.lastIndexOf("."));
         //使用UUID拼接文件后缀名 防止文件名重复 导致被覆盖
         String replace = UUID.randomUUID().toString().replace("-", "")+s;
-        //创建文件 此处文件路径为项目resource目录下upload文件中
-        File file = new File(System.getProperty("user.dir") + "./uploads/" + replace);
-        //判断文件的父文件夹是否存在 如果不存在 则创建
-        if (!file.getParentFile().exists()){
-            file.getParentFile().mkdirs();
-        }
-        imageFile.transferTo(file);
-        //返回文件访问路径
-        return serverDomain+"uploads/"+replace;
+        Path path = Paths.get(uploadPath, replace);
+        Files.createDirectories(path.getParent());
+        imageFile.transferTo(path);
+        String domain = serverDomain.endsWith("/") ? serverDomain : serverDomain + "/";
+        return domain + "uploads/" + replace;
     }
 
 
