@@ -4,12 +4,19 @@ import com.alibaba.fastjson2.JSON;
 import com.yht.image.ai.controller.dto.ChatRequestDTO;
 import com.yht.image.ai.controller.dto.TaskResponseDTO;
 import com.yht.image.ai.service.IImageService;
+import com.yht.image.ai.service.IMultimodalService;
 import com.yht.image.ai.service.ai.IAIService;
 import com.yht.image.ai.service.entity.ChatResultEntity;
 import com.yht.image.ai.types.common.Constants;
 import com.yht.image.ai.types.util.IRedisService;
+import jakarta.annotation.Resource;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -22,9 +29,16 @@ import java.util.concurrent.CompletableFuture;
  * @Date 2025/11/5
  */
 @Service
+@Slf4j
 public class ImageService implements IImageService {
     private final Map<String, IAIService> aiServiceMap;
     private IRedisService redisService;
+
+    @Resource
+    private IMultimodalService multimodalService;
+
+    @Value("${server.domain}")
+    private String serverDomain;
 
     public ImageService(Map<String, IAIService> aiServiceMap, IRedisService redisService) {
         this.aiServiceMap = aiServiceMap;
@@ -32,7 +46,7 @@ public class ImageService implements IImageService {
     }
 
     @Override
-    public String TextToImage(ChatRequestDTO chatRequestDTO) {
+    public String textToImage(ChatRequestDTO chatRequestDTO) {
         String taskId = UUID.randomUUID().toString();
         List<CompletableFuture<ChatResultEntity>> futures = new ArrayList<>();
 
@@ -76,4 +90,35 @@ public class ImageService implements IImageService {
         taskResponseDTO.setChatResultEntityList(results);
         return taskResponseDTO;
     }
+
+    @Override
+    public String imageToImage(ChatRequestDTO chatRequestDTO, MultipartFile imageFile) throws IOException {
+        String imageUrl = createImageUrl(imageFile);
+        log.info("生成imageUrl:{}", imageUrl);
+        String description = multimodalService.imageTOText(imageUrl);
+        String prompt = chatRequestDTO.getPrompt() + " " + description;
+        chatRequestDTO.setPrompt(prompt);
+        return textToImage(chatRequestDTO);
+    }
+
+    @Override
+    public String createImageUrl(MultipartFile imageFile) throws IOException {
+        //获取上传图片全名
+        String filename = imageFile.getOriginalFilename();
+        //截取图片后缀名
+        String s = filename.substring(filename.lastIndexOf("."));
+        //使用UUID拼接文件后缀名 防止文件名重复 导致被覆盖
+        String replace = UUID.randomUUID().toString().replace("-", "")+s;
+        //创建文件 此处文件路径为项目resource目录下upload文件中
+        File file = new File(System.getProperty("user.dir") + "./uploads/" + replace);
+        //判断文件的父文件夹是否存在 如果不存在 则创建
+        if (!file.getParentFile().exists()){
+            file.getParentFile().mkdirs();
+        }
+        imageFile.transferTo(file);
+        //返回文件访问路径
+        return serverDomain+"uploads/"+replace;
+    }
+
+
 }

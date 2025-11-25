@@ -23,7 +23,6 @@ public class ChatGLMService implements IAIService {
     ZhipuAiClient client;
 
     public ChatResultEntity creatImage(ChatRequestDTO chatRequestDTO) {
-        // Create image generation request
         CreateImageRequest request = CreateImageRequest.builder()
                 .model(Constants.ModelCogView3Flash)
                 .prompt(chatRequestDTO.getPrompt())

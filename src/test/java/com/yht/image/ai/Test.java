@@ -3,6 +3,7 @@ package com.yht.image.ai;
 import com.alibaba.fastjson2.JSON;
 import com.yht.image.ai.controller.dto.ChatRequestDTO;
 import com.yht.image.ai.service.IImageService;
+import com.yht.image.ai.service.IMultimodalService;
 import com.yht.image.ai.service.ai.IAIService;
 import com.yht.image.ai.service.entity.ChatResultEntity;
 import com.yht.image.ai.types.common.Constants;
@@ -25,6 +26,8 @@ public class Test {
     private IImageService imageService;
     @Resource
     private IRedisService redisService;
+    @Resource
+    IMultimodalService multimodalService;
     @Resource(name = "doubao-seedream-4-0")
     IAIService doubaoService;
     @org.junit.jupiter.api.Test
@@ -36,7 +39,7 @@ public class Test {
         models.add("cogview-3-flash");
         chatRequestDTO.setModels(models);
         chatRequestDTO.setSize("1024x1024");
-        String taskId = imageService.TextToImage(chatRequestDTO);
+        String taskId = imageService.textToImage(chatRequestDTO);
         System.out.println(taskId);
         CountDownLatch latch = new CountDownLatch(2);
         latch.await();
@@ -51,7 +54,7 @@ public class Test {
 
     @org.junit.jupiter.api.Test
     public void DoubaoTest(){
-        doubaoService.creatImage(null);
+        multimodalService.imageTOText("https://files.imagetourl.net/uploads/1763967123863-85eb91ab-16be-4df3-be97-b1eabbb92a0d.jpg");
     }
 
 }
