@@ -73,17 +73,24 @@ public class ChatController {
 
     @PostMapping("/image_to_image")
     public Response<String> ImageToImage(@RequestPart("chatRequestDTO") ChatRequestDTO chatRequestDTO,@RequestPart("imageFile") MultipartFile imageFile) throws IOException {
-        if(chatRequestDTO.getModels() == null || chatRequestDTO.getModels().size() == 0){
+        try {
+            if(chatRequestDTO.getModels() == null || chatRequestDTO.getModels().size() == 0){
+                return Response.<String>builder()
+                        .code(Constants.ResponseCode.FAIL.getCode())
+                        .info(Constants.ResponseCode.FAIL.getMessage())
+                        .build();
+            }
+            String taskId = imageService.imageToImage(chatRequestDTO,imageFile);
+            return Response.<String>builder()
+                    .code(Constants.ResponseCode.SUCCESS.getCode())
+                    .info(Constants.ResponseCode.SUCCESS.getMessage())
+                    .data(taskId)
+                    .build();
+        } catch (IOException e) {
             return Response.<String>builder()
                     .code(Constants.ResponseCode.FAIL.getCode())
                     .info(Constants.ResponseCode.FAIL.getMessage())
                     .build();
         }
-        String taskId = imageService.imageToImage(chatRequestDTO,imageFile);
-        return Response.<String>builder()
-                .code(Constants.ResponseCode.SUCCESS.getCode())
-                .info(Constants.ResponseCode.SUCCESS.getMessage())
-                .data(taskId)
-                .build();
     }
 }
