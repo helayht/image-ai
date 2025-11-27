@@ -12,6 +12,7 @@ import java.util.List;
 @Data
 public class ChatRequestDTO {
     private String prompt;
+    private String username;
     private List<String> models;
     private String mode;
     private Integer conversationsId;

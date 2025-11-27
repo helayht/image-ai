@@ -13,6 +13,7 @@ import lombok.Data;
 public class Conversations{
     @TableId(value = "id",type = IdType.AUTO)
     private Integer id;
+    private String username;
     private String title;
     private String createdTime;
 }

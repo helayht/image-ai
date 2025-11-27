@@ -39,10 +39,10 @@ public class MessageController {
         }
     }
 
-    @GetMapping("/conversations_list")
-    public Response<List<Conversations>> getConversationsList(){
+    @GetMapping("/conversations_list/{username}")
+    public Response<List<Conversations>> getConversationsList(@PathVariable String username){
         try {
-            List<Conversations> conversations = messagesService.getConversationsList();
+            List<Conversations> conversations = messagesService.getConversationsList(username);
             return Response.<List<Conversations>>builder()
                     .code(Constants.ResponseCode.SUCCESS.getCode())
                     .info(Constants.ResponseCode.SUCCESS.getMessage())

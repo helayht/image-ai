@@ -6,6 +6,7 @@
     <resultMap id="BaseResultMap" type="com.yht.image.ai.mapper.po.Conversations">
         <id property="id" column="id"/>
         <result property="title" column="title"/>
+        <result property="username" column="username"/>
         <result property="createdTime" column="created_time"/>
     </resultMap>
 </mapper>

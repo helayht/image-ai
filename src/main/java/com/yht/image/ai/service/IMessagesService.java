@@ -19,5 +19,5 @@ public interface IMessagesService {
 
     List<MessagesResponseDTO> getMessageList(Integer conversationsId);
 
-    List<Conversations> getConversationsList();
+    List<Conversations> getConversationsList(String username);
 }

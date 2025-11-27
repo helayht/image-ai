@@ -41,6 +41,7 @@ public class MessagesService implements IMessagesService {
         if(chatRequestDTO.getConversationsId() == null){
             conversations.setTitle(chatRequestDTO.getPrompt());
             conversations.setCreatedTime(createdTime);
+            conversations.setUsername(chatRequestDTO.getUsername());
             conversationsMapper.insert(conversations);
             chatRequestDTO.setConversationsId(conversations.getId());
         }
@@ -127,7 +128,9 @@ public class MessagesService implements IMessagesService {
     }
 
     @Override
-    public List<Conversations> getConversationsList() {
-        return conversationsMapper.selectList(null);
+    public List<Conversations> getConversationsList(String username) {
+        QueryWrapper<Conversations> conversationsQueryWrapper = new QueryWrapper<>();
+        conversationsQueryWrapper.eq("username", username);
+        return conversationsMapper.selectList(conversationsQueryWrapper);
     }
 }
