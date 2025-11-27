@@ -1,8 +1,10 @@
 package com.yht.image.ai.controller;
 
 import com.yht.image.ai.controller.dto.ChatRequestDTO;
+import com.yht.image.ai.controller.dto.ChatResponseDTO;
 import com.yht.image.ai.controller.dto.TaskResponseDTO;
 import com.yht.image.ai.service.IImageService;
+import com.yht.image.ai.service.IMessagesService;
 import com.yht.image.ai.service.entity.ChatResultEntity;
 import com.yht.image.ai.types.common.Constants;
 import com.yht.image.ai.types.model.Response;
@@ -31,23 +33,30 @@ import java.util.UUID;
 public class ChatController {
     @Resource
     private IImageService imageService;
+    @Resource
+    private IMessagesService messagesService;
     @PostMapping("/text_to_image")
-    public Response<String> TextToImage(@RequestBody ChatRequestDTO chatRequestDTO) {
+    public Response<ChatResponseDTO> TextToImage(@RequestBody ChatRequestDTO chatRequestDTO) {
         try{
             if(chatRequestDTO.getModels() == null || chatRequestDTO.getModels().size() == 0){
-                return Response.<String>builder()
+                return Response.<ChatResponseDTO>builder()
                         .code(Constants.ResponseCode.FAIL.getCode())
                         .info(Constants.ResponseCode.FAIL.getMessage())
                         .build();
             }
+            Integer conversationsId = messagesService.addUserMessage(chatRequestDTO, null);
+            chatRequestDTO.setConversationsId(conversationsId);
             String taskId = imageService.textToImage(chatRequestDTO);
-            return Response.<String>builder()
+            ChatResponseDTO chatResponseDTO = new ChatResponseDTO();
+            chatResponseDTO.setTaskId(taskId);
+            chatResponseDTO.setConversationsId(conversationsId);
+            return Response.<ChatResponseDTO>builder()
                     .code(Constants.ResponseCode.SUCCESS.getCode())
                     .info(Constants.ResponseCode.SUCCESS.getMessage())
-                    .data(taskId)
+                    .data(chatResponseDTO)
                     .build();
         }catch (Exception e){
-            return Response.<String>builder()
+            return Response.<ChatResponseDTO>builder()
                     .code(Constants.ResponseCode.FAIL.getCode())
                     .info(Constants.ResponseCode.FAIL.getMessage())
                     .build();
@@ -58,6 +67,9 @@ public class ChatController {
     public Response<TaskResponseDTO> getTask(@PathVariable String taskId) {
         try {
             TaskResponseDTO results = imageService.queryResultByTaskId(taskId);
+            if(results.getStatus().equals("success")){
+                messagesService.addAssistantMessage(results.getChatResultEntityList(),taskId);
+            }
             return Response.<TaskResponseDTO>builder()
                     .code(Constants.ResponseCode.SUCCESS.getCode())
                     .info(Constants.ResponseCode.SUCCESS.getMessage())
@@ -80,7 +92,9 @@ public class ChatController {
                         .info(Constants.ResponseCode.FAIL.getMessage())
                         .build();
             }
-            String taskId = imageService.imageToImage(chatRequestDTO,imageFile);
+            String imageUrl = imageService.createImageUrl(imageFile);
+            messagesService.addUserMessage(chatRequestDTO, imageUrl);
+            String taskId = imageService.imageToImage(chatRequestDTO,imageUrl);
             return Response.<String>builder()
                     .code(Constants.ResponseCode.SUCCESS.getCode())
                     .info(Constants.ResponseCode.SUCCESS.getMessage())

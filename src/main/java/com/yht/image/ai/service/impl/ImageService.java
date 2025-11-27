@@ -64,7 +64,7 @@ public class ImageService implements IImageService {
             });
             futures.add(future);
         }
-
+        redisService.setValue(Constants.RedisKey.TASK_CONVERSATIONS_KEY+taskId,chatRequestDTO.getConversationsId());
         // 等待所有任务完成并将结果保存到 Redis
         CompletableFuture.allOf(futures.toArray(new CompletableFuture[0]))
                 .thenRun(() -> {
@@ -96,8 +96,7 @@ public class ImageService implements IImageService {
     }
 
     @Override
-    public String imageToImage(ChatRequestDTO chatRequestDTO, MultipartFile imageFile) throws IOException {
-        String imageUrl = createImageUrl(imageFile);
+    public String imageToImage(ChatRequestDTO chatRequestDTO, String imageUrl) throws IOException {
         log.info("生成imageUrl:{}", imageUrl);
         String description = multimodalService.imageTOText(imageUrl);
         String prompt = chatRequestDTO.getPrompt() + " " + description;

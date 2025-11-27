@@ -14,6 +14,7 @@ public class ChatRequestDTO {
     private String prompt;
     private List<String> models;
     private String mode;
+    private Integer conversationsId;
     private String size = "1024x1024";
 
 }

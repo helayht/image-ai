@@ -1,0 +1,14 @@
+package com.yht.image.ai.controller.dto;
+
+import lombok.Data;
+
+/**
+ * @Description
+ * @Author hela
+ * @Date 2025/11/26
+ */
+@Data
+public class UserRequestDTO {
+    private String username;
+    private String password;
+}

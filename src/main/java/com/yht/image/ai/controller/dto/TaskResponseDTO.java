@@ -14,5 +14,6 @@ import java.util.List;
 @Data
 public class TaskResponseDTO {
     private List<ChatResultEntity> chatResultEntityList;
+    private Integer conversationsId;
     private String status;
 }

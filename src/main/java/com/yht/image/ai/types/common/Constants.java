@@ -23,7 +23,17 @@ public class Constants {
     }
 
     public static class RedisKey{
+        /**
+         * 任务结果缓存
+         */
         public static String TASK_RESULT_KEY = "task_result_";
+        /**
+         * 任务状态缓存
+         */
         public static String TASK_STATUS_KEY = "task_status_";
+        /**
+         * 会话缓存
+         */
+        public static String TASK_CONVERSATIONS_KEY = "task_conversations_";
     }
 }

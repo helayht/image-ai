@@ -56,5 +56,4 @@ public class Test {
     public void DoubaoTest(){
         multimodalService.imageTOText("https://files.imagetourl.net/uploads/1763967123863-85eb91ab-16be-4df3-be97-b1eabbb92a0d.jpg");
     }
-
 }

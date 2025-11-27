@@ -18,7 +18,7 @@ public interface IImageService {
 
     TaskResponseDTO queryResultByTaskId(String taskId);
 
-    String imageToImage(ChatRequestDTO chatRequestDTO, MultipartFile imageFile) throws IOException;
+    String imageToImage(ChatRequestDTO chatRequestDTO, String imageUrl) throws IOException;
 
-    public String createImageUrl(MultipartFile imageFile) throws IOException;
+    String createImageUrl(MultipartFile imageFile) throws IOException;
 }

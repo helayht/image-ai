@@ -1,5 +1,5 @@
 server:
-  domain: http://nf585696.natappfree.cc/
+  domain:  http://nf585696.natappfree.cc/
   port: 8080
   tomcat:
     max-http-form-post-size: 20MB   # 解析 multipart 的总大小上限
@@ -36,3 +36,34 @@ spring:
   web:
     resources:
       static-locations: classpath:/static/,file:${upload.path}/
+  datasource:
+    username: root
+    password: 123456
+    url: jdbc:mysql://127.0.0.1:3306/image_ai?useUnicode=true&characterEncoding=utf8&autoReconnect=true&zeroDateTimeBehavior=convertToNull&serverTimezone=UTC&useSSL=true
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    hikari:
+      pool-name: Retail_HikariCP
+      minimum-idle: 15 #最小空闲连接数量
+      idle-timeout: 180000 #空闲连接存活最大时间，默认600000（10分钟）
+      maximum-pool-size: 25 #连接池最大连接数，默认是10
+      auto-commit: true  #此属性控制从池返回的连接的默认自动提交行为,默认值：true
+      max-lifetime: 1800000 #此属性控制池中连接的最长生命周期，值0表示无限生命周期，默认1800000即30分钟
+      connection-timeout: 30000 #数据库连接超时时间,默认30秒，即30000
+      connection-test-query: SELECT 1
+    type: com.zaxxer.hikari.HikariDataSource
+
+# MyBatis-Plus 配置
+mybatis-plus:
+  # mapper.xml 文件扫描路径
+  mapper-locations: classpath*:/mapper/*.xml
+  # 实体类别名包路径
+  type-aliases-package: com.yht.intelli.rail.model.po
+#  configuration:
+#    自动将数据库下划线命名映射为 Java 驼峰命名
+#    map-underscore-to-camel-case: true
+#    # 日志实现（开发环境开启，方便调试）
+#    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+#  global-config:
+#    db-config:
+#      # 全局默认主键类型
+#      id-type: auto
