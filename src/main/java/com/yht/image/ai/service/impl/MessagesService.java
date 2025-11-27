@@ -91,6 +91,7 @@ public class MessagesService implements IMessagesService {
     public List<MessagesResponseDTO> getMessageList(Integer conversationsId) {
         QueryWrapper<Messages> messagesQueryWrapper = new QueryWrapper<>();
         messagesQueryWrapper.eq("conversations_id", conversationsId);
+        messagesQueryWrapper.orderByAsc("created_time");
         List<Messages> messages = messagesMapper.selectList(messagesQueryWrapper);
         QueryWrapper<Conversations> conversationsQueryWrapper = new QueryWrapper<>();
         conversationsQueryWrapper.eq("id", conversationsId);
@@ -132,5 +133,10 @@ public class MessagesService implements IMessagesService {
         QueryWrapper<Conversations> conversationsQueryWrapper = new QueryWrapper<>();
         conversationsQueryWrapper.eq("username", username);
         return conversationsMapper.selectList(conversationsQueryWrapper);
+    }
+
+    @Override
+    public boolean delConversations(List<Integer> conversationsId) {
+        return conversationsMapper.deleteBatchIds(conversationsId) > 0;
     }
 }

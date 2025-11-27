@@ -56,4 +56,30 @@ public class MessageController {
                     .build();
         }
     }
+
+    @PostMapping("/conversations/del")
+    public Response<Boolean> delConversations(@RequestBody List<Integer> conversationsId){
+        try {
+            boolean flag = messagesService.delConversations(conversationsId);
+            if(flag){
+                return Response.<Boolean>builder()
+                        .code(Constants.ResponseCode.SUCCESS.getCode())
+                        .info(Constants.ResponseCode.SUCCESS.getMessage())
+                        .data(true)
+                        .build();
+            }else{
+                return Response.<Boolean>builder()
+                        .code(Constants.ResponseCode.FAIL.getCode())
+                        .info(Constants.ResponseCode.FAIL.getMessage())
+                        .data(false)
+                        .build();
+            }
+        } catch (Exception e) {
+            return Response.<Boolean>builder()
+                    .code(Constants.ResponseCode.FAIL.getCode())
+                    .info(Constants.ResponseCode.FAIL.getMessage())
+                    .data(false)
+                    .build();
+        }
+    }
 }
