@@ -7,4 +7,6 @@ package com.yht.image.ai.service;
  */
 public interface IUserService {
     boolean login(String username, String password);
+
+    boolean register(String username, String password);
 }

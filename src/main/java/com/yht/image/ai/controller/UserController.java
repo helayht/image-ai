@@ -52,4 +52,38 @@ public class UserController {
                     .build();
         }
     }
+
+    @PostMapping("/register")
+    public Response<Boolean> register(@RequestBody UserRequestDTO userRequestDTO) {
+        try {
+            String username = userRequestDTO.getUsername();
+            String password = userRequestDTO.getPassword();
+            if(username == null || password == null){
+                return Response.<Boolean>builder()
+                        .code(Constants.ResponseCode.SUCCESS.getCode())
+                        .info(Constants.ResponseCode.SUCCESS.getMessage())
+                        .data(false)
+                        .build();
+            }
+            if(userService.register(username,password)){
+                return Response.<Boolean>builder()
+                        .code(Constants.ResponseCode.SUCCESS.getCode())
+                        .info(Constants.ResponseCode.SUCCESS.getMessage())
+                        .data(true)
+                        .build();
+            }else{
+                return Response.<Boolean>builder()
+                        .code(Constants.ResponseCode.FAIL.getCode())
+                        .info(Constants.ResponseCode.FAIL.getMessage())
+                        .data(false)
+                        .build();
+            }
+        }catch (Exception e){
+            return Response.<Boolean>builder()
+                    .code(Constants.ResponseCode.FAIL.getCode())
+                    .info(Constants.ResponseCode.FAIL.getMessage())
+                    .data(false)
+                    .build();
+        }
+    }
 }
