@@ -3,7 +3,7 @@ package com.yht.image.ai;
 import com.alibaba.fastjson2.JSON;
 import com.yht.image.ai.controller.dto.ChatRequestDTO;
 import com.yht.image.ai.service.IImageService;
-import com.yht.image.ai.service.IMultimodalService;
+import com.yht.image.ai.service.ILLMService;
 import com.yht.image.ai.service.ai.IAIService;
 import com.yht.image.ai.service.entity.ChatResultEntity;
 import com.yht.image.ai.types.common.Constants;
@@ -27,7 +27,7 @@ public class Test {
     @Resource
     private IRedisService redisService;
     @Resource
-    IMultimodalService multimodalService;
+    ILLMService multimodalService;
     @Resource(name = "doubao-seedream-4-0")
     IAIService doubaoService;
     @org.junit.jupiter.api.Test

@@ -19,13 +19,14 @@ import java.util.concurrent.TimeUnit;
 public class DoubaoAiClientConfig {
     @Value("${ai.api-key.doubao}")
     private String API_KEY;
+    static String baseUrl = "https://ark.cn-beijing.volces.com/api/v3";
 
     @Bean("doubaoAiClient")
     public ArkService doubaoAiClient(){
         ConnectionPool connectionPool = new ConnectionPool(5, 1, TimeUnit.SECONDS);
         Dispatcher dispatcher = new Dispatcher();
         return ArkService.builder()
-                .baseUrl("https://ark.cn-beijing.volces.com/api/v3") // The base URL for model invocation .
+                .baseUrl(baseUrl)
                 .dispatcher(dispatcher)
                 .connectionPool(connectionPool)
                 .apiKey(API_KEY)

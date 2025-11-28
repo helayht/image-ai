@@ -4,6 +4,7 @@ import com.yht.image.ai.controller.dto.ChatRequestDTO;
 import com.yht.image.ai.controller.dto.ChatResponseDTO;
 import com.yht.image.ai.controller.dto.TaskResponseDTO;
 import com.yht.image.ai.service.IImageService;
+import com.yht.image.ai.service.ILLMService;
 import com.yht.image.ai.service.IMessagesService;
 import com.yht.image.ai.service.entity.ChatResultEntity;
 import com.yht.image.ai.types.common.Constants;
@@ -35,6 +36,8 @@ public class ChatController {
     private IImageService imageService;
     @Resource
     private IMessagesService messagesService;
+    @Resource
+    private ILLMService llmService;
     @PostMapping("/text_to_image")
     public Response<ChatResponseDTO> TextToImage(@RequestBody ChatRequestDTO chatRequestDTO) {
         try{
@@ -46,6 +49,7 @@ public class ChatController {
             }
             Integer conversationsId = messagesService.addUserMessage(chatRequestDTO, null);
             chatRequestDTO.setConversationsId(conversationsId);
+            chatRequestDTO.setPrompt(llmService.textPromptOptimization(chatRequestDTO.getPrompt()));;
             String taskId = imageService.textToImage(chatRequestDTO);
             ChatResponseDTO chatResponseDTO = new ChatResponseDTO();
             chatResponseDTO.setTaskId(taskId);

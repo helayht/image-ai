@@ -4,7 +4,7 @@ import com.alibaba.fastjson2.JSON;
 import com.yht.image.ai.controller.dto.ChatRequestDTO;
 import com.yht.image.ai.controller.dto.TaskResponseDTO;
 import com.yht.image.ai.service.IImageService;
-import com.yht.image.ai.service.IMultimodalService;
+import com.yht.image.ai.service.ILLMService;
 import com.yht.image.ai.service.ai.IAIService;
 import com.yht.image.ai.service.entity.ChatResultEntity;
 import com.yht.image.ai.types.common.Constants;
@@ -37,7 +37,7 @@ public class ImageService implements IImageService {
     private IRedisService redisService;
 
     @Resource
-    private IMultimodalService multimodalService;
+    private ILLMService llmService;
 
     @Value("${server.domain}")
     private String serverDomain;
@@ -98,8 +98,8 @@ public class ImageService implements IImageService {
     @Override
     public String imageToImage(ChatRequestDTO chatRequestDTO, String imageUrl) throws IOException {
         log.info("生成imageUrl:{}", imageUrl);
-        String description = multimodalService.imageTOText(imageUrl);
-        String prompt = chatRequestDTO.getPrompt() + " " + description;
+        String description = llmService.imageTOText(imageUrl);
+        String prompt =llmService.imagePromptOptimization(chatRequestDTO.getPrompt(),description);
         chatRequestDTO.setPrompt(prompt);
         return textToImage(chatRequestDTO);
     }
