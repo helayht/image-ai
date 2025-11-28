@@ -88,27 +88,51 @@ public class ChatController {
     }
 
     @PostMapping("/image_to_image")
-    public Response<String> ImageToImage(@RequestPart("chatRequestDTO") ChatRequestDTO chatRequestDTO,@RequestPart("imageFile") MultipartFile imageFile) throws IOException {
+    public Response<ChatResponseDTO> ImageToImage(@RequestPart("chatRequestDTO") ChatRequestDTO chatRequestDTO,@RequestPart("imageFile") MultipartFile imageFile) throws IOException {
         try {
             if(chatRequestDTO.getModels() == null || chatRequestDTO.getModels().size() == 0){
-                return Response.<String>builder()
+                return Response.<ChatResponseDTO>builder()
                         .code(Constants.ResponseCode.FAIL.getCode())
                         .info(Constants.ResponseCode.FAIL.getMessage())
                         .build();
             }
-            String imageUrl = imageService.createImageUrl(imageFile);
-            messagesService.addUserMessage(chatRequestDTO, imageUrl);
+            String imageUrl = imageService.createFileUrl(imageFile);
+            Integer conversationsId = messagesService.addUserMessage(chatRequestDTO, imageUrl);
             String taskId = imageService.imageToImage(chatRequestDTO,imageUrl);
-            return Response.<String>builder()
+            ChatResponseDTO chatResponseDTO = new ChatResponseDTO();
+            chatResponseDTO.setTaskId(taskId);
+            chatResponseDTO.setConversationsId(conversationsId);
+            return Response.<ChatResponseDTO>builder()
                     .code(Constants.ResponseCode.SUCCESS.getCode())
                     .info(Constants.ResponseCode.SUCCESS.getMessage())
-                    .data(taskId)
+                    .data(chatResponseDTO)
                     .build();
         } catch (IOException e) {
-            return Response.<String>builder()
+            return Response.<ChatResponseDTO>builder()
                     .code(Constants.ResponseCode.FAIL.getCode())
                     .info(Constants.ResponseCode.FAIL.getMessage())
                     .build();
         }
+    }
+
+    @PostMapping("vedio_to_image")
+    public Response<ChatResponseDTO> VedioToImage(@RequestPart("chatRequestDTO") ChatRequestDTO chatRequestDTO,@RequestPart("vedioFile") MultipartFile vedioFile) throws IOException {
+        if(chatRequestDTO.getModels() == null || chatRequestDTO.getModels().size() == 0){
+            return Response.<ChatResponseDTO>builder()
+                    .code(Constants.ResponseCode.FAIL.getCode())
+                    .info(Constants.ResponseCode.FAIL.getMessage())
+                    .build();
+        }
+        String vedioUrl = imageService.createFileUrl(vedioFile);
+        Integer conversationsId = messagesService.addUserMessage(chatRequestDTO, vedioUrl);
+        String taskId = imageService.vedioToImage(chatRequestDTO,vedioUrl);
+        ChatResponseDTO chatResponseDTO = new ChatResponseDTO();
+        chatResponseDTO.setTaskId(taskId);
+        chatResponseDTO.setConversationsId(conversationsId);
+        return Response.<ChatResponseDTO>builder()
+                .code(Constants.ResponseCode.SUCCESS.getCode())
+                .info(Constants.ResponseCode.SUCCESS.getMessage())
+                .data(chatResponseDTO)
+                .build();
     }
 }

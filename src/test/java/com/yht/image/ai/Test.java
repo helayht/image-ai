@@ -9,8 +9,10 @@ import com.yht.image.ai.service.entity.ChatResultEntity;
 import com.yht.image.ai.types.common.Constants;
 import com.yht.image.ai.types.util.IRedisService;
 import jakarta.annotation.Resource;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
@@ -27,7 +29,12 @@ public class Test {
     @Resource
     private IRedisService redisService;
     @Resource
+    private ILLMService llmService;
+    @Resource
     ILLMService multimodalService;
+
+    @Value("${server.domain}")
+    private String domain;
     @Resource(name = "doubao-seedream-4-0")
     IAIService doubaoService;
     @org.junit.jupiter.api.Test
@@ -53,7 +60,7 @@ public class Test {
     }
 
     @org.junit.jupiter.api.Test
-    public void DoubaoTest(){
-        multimodalService.imageTOText("https://files.imagetourl.net/uploads/1763967123863-85eb91ab-16be-4df3-be97-b1eabbb92a0d.jpg");
+    public void DoubaoTest() throws IOException {
+        llmService.vedioTOText(domain+"/uploads/vedio.mp4");
     }
 }

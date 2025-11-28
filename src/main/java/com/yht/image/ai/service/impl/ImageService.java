@@ -105,19 +105,26 @@ public class ImageService implements IImageService {
     }
 
     @Override
-    public String createImageUrl(MultipartFile imageFile) throws IOException {
-        //获取上传图片全名
-        String filename = imageFile.getOriginalFilename();
-        //截取图片后缀名
+    public String createFileUrl(MultipartFile file) throws IOException {
+        //获取上传文件全名
+        String filename = file.getOriginalFilename();
+        //截取文件后缀名
         String s = filename.substring(filename.lastIndexOf("."));
         //使用UUID拼接文件后缀名 防止文件名重复 导致被覆盖
         String replace = UUID.randomUUID().toString().replace("-", "")+s;
         Path path = Paths.get(uploadPath, replace);
         Files.createDirectories(path.getParent());
-        imageFile.transferTo(path);
+        file.transferTo(path);
         String domain = serverDomain.endsWith("/") ? serverDomain : serverDomain + "/";
         return domain + "uploads/" + replace;
     }
 
-
+    @Override
+    public String vedioToImage(ChatRequestDTO chatRequestDTO, String vedioUrl) throws IOException {
+        log.info("生成vedioUrl:{}", vedioUrl);
+        String description = llmService.vedioTOText(vedioUrl);
+        String prompt = llmService.vedioPromptOptimization(chatRequestDTO.getPrompt(),description);
+        chatRequestDTO.setPrompt(prompt);
+        return textToImage(chatRequestDTO);
+    }
 }

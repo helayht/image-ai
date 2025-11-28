@@ -1,5 +1,5 @@
 server:
-  domain:  http://nf585696.natappfree.cc/
+  domain:   http://nf585696.natappfree.cc/
   port: 8080
   tomcat:
     max-http-form-post-size: 20MB   # 解析 multipart 的总大小上限
@@ -31,8 +31,8 @@ upload:
 spring:
   servlet:
     multipart:
-      max-file-size: 20MB # 上传单个文件的最大大小
-      max-request-size: 20MB # 上传多个文件时，所有文件的总大小上限
+      max-file-size: 200MB # 上传单个文件的最大大小
+      max-request-size: 200MB # 上传多个文件时，所有文件的总大小上限
   web:
     resources:
       static-locations: classpath:/static/,file:${upload.path}/

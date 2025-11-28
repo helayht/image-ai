@@ -20,5 +20,7 @@ public interface IImageService {
 
     String imageToImage(ChatRequestDTO chatRequestDTO, String imageUrl) throws IOException;
 
-    String createImageUrl(MultipartFile imageFile) throws IOException;
+    String createFileUrl(MultipartFile imageFile) throws IOException;
+
+    String vedioToImage(ChatRequestDTO chatRequestDTO, String vedioUrl) throws IOException;
 }
