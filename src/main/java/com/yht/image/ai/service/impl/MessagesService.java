@@ -139,4 +139,13 @@ public class MessagesService implements IMessagesService {
     public boolean delConversations(List<Integer> conversationsId) {
         return conversationsMapper.deleteBatchIds(conversationsId) > 0;
     }
+
+    @Override
+    public boolean updateConversationsTitle(Integer conversationsId, String title) {
+        QueryWrapper<Conversations> conversationsQueryWrapper = new QueryWrapper<>();
+        conversationsQueryWrapper.eq("id", conversationsId);
+        Conversations conversations = new Conversations();
+        conversations.setTitle(title);
+        return conversationsMapper.update(conversations, conversationsQueryWrapper) > 0;
+    }
 }

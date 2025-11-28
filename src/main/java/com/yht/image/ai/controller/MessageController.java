@@ -1,5 +1,6 @@
 package com.yht.image.ai.controller;
 
+import com.yht.image.ai.controller.dto.ConversationsRequestDTO;
 import com.yht.image.ai.controller.dto.MessagesResponseDTO;
 import com.yht.image.ai.mapper.po.Conversations;
 import com.yht.image.ai.service.IMessagesService;
@@ -75,6 +76,32 @@ public class MessageController {
                         .build();
             }
         } catch (Exception e) {
+            return Response.<Boolean>builder()
+                    .code(Constants.ResponseCode.FAIL.getCode())
+                    .info(Constants.ResponseCode.FAIL.getMessage())
+                    .data(false)
+                    .build();
+        }
+    }
+
+    @PostMapping("conversations/update_title")
+    public Response<Boolean> updateConversationsTitle(@RequestBody ConversationsRequestDTO conversationsRequestDTO){
+        try {
+            boolean flag = messagesService.updateConversationsTitle(conversationsRequestDTO.getConversationsId(),conversationsRequestDTO.getTitle());
+            if(flag == true){
+                return Response.<Boolean>builder()
+                        .code(Constants.ResponseCode.SUCCESS.getCode())
+                        .info(Constants.ResponseCode.SUCCESS.getMessage())
+                        .data(true)
+                        .build();
+            }else{
+                return Response.<Boolean>builder()
+                        .code(Constants.ResponseCode.FAIL.getCode())
+                        .info(Constants.ResponseCode.FAIL.getMessage())
+                        .data(false)
+                        .build();
+            }
+        }catch (Exception e){
             return Response.<Boolean>builder()
                     .code(Constants.ResponseCode.FAIL.getCode())
                     .info(Constants.ResponseCode.FAIL.getMessage())

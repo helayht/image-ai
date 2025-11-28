@@ -22,4 +22,6 @@ public interface IMessagesService {
     List<Conversations> getConversationsList(String username);
 
     boolean delConversations(List<Integer> conversationsId);
+
+    boolean updateConversationsTitle(Integer conversationsId, String title);
 }
