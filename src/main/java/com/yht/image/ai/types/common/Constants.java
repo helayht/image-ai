@@ -35,6 +35,10 @@ public class Constants {
          * 会话缓存
          */
         public static String TASK_CONVERSATIONS_KEY = "task_conversations_";
+        /**
+         * 验证码缓存
+         */
+        public static String VERIFY_CODE_KEY = "verify_code_";
     }
 
     public static class LLM{

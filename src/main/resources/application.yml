@@ -1,9 +1,9 @@
 server:
-  domain:   http://nf585696.natappfree.cc/
+  domain: http://hela.natapp1.cc/
   port: 8080
   tomcat:
-    max-http-form-post-size: 20MB   # 解析 multipart 的总大小上限
-    max-swallow-size: 20MB          # 上传被中断时可吞掉的最大数据，-1 表示不限制
+    max-http-form-post-size: 200MB   # 解析 multipart 的总大小上限
+    max-swallow-size: 200MB          # 上传被中断时可吞掉的最大数据，-1 表示不限制
 
 redis:
   sdk:
@@ -51,6 +51,20 @@ spring:
       connection-timeout: 30000 #数据库连接超时时间,默认30秒，即30000
       connection-test-query: SELECT 1
     type: com.zaxxer.hikari.HikariDataSource
+
+
+# 微信公众号配置信息
+# originalid：原始ID
+# appid：个人AppID
+# token：开通接口服务自定义设置
+wx:
+  mp:
+    configs:
+      - appId: wx7bb2c4dd34de2e82
+        token: b8b6
+        secret: c32b02fa1cf37a0dbf2c281775259c58
+        aesKey: 5NqPp9eua9Xf2ieN20hucLrH9cNQjsZD5EYnHaYFIAn
+
 
 # MyBatis-Plus 配置
 mybatis-plus:
