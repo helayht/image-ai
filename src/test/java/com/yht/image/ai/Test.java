@@ -54,9 +54,8 @@ public class Test {
 
     @org.junit.jupiter.api.Test
     public void test1() {
-       String value = redisService.getValue(Constants.RedisKey.TASK_RESULT_KEY+"ee0e40a2-3ab8-4f96-a63e-3f7a621746b3");
-       List<ChatResultEntity> results = JSON.parseArray(value, ChatResultEntity.class);
-       System.out.println(results);
+       redisService.setValue("openId","code");
+       System.out.println((String) redisService.getValue("openId"));
     }
 
     @org.junit.jupiter.api.Test

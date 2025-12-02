@@ -1,5 +1,6 @@
 package com.yht.image.ai.service;
 
+import com.yht.image.ai.controller.dto.LoginResponseDTO;
 import com.yht.image.ai.service.entity.UserMessageEntity;
 
 /**
@@ -10,5 +11,5 @@ import com.yht.image.ai.service.entity.UserMessageEntity;
 public interface IAuthService {
     String createVerifyCode(UserMessageEntity userMessageEntity);
 
-    String doLogin(String openId);
+    LoginResponseDTO doLogin(String code);
 }

@@ -1,5 +1,6 @@
 package com.yht.image.ai.controller;
 
+import com.yht.image.ai.controller.dto.LoginResponseDTO;
 import com.yht.image.ai.service.IAuthService;
 import com.yht.image.ai.types.common.Constants;
 import com.yht.image.ai.types.model.Response;
@@ -18,22 +19,22 @@ public class AuthController {
     @Resource
     private IAuthService authService;
     @PostMapping("/login")
-    public Response<String> login(@RequestParam String code) {
+    public Response<LoginResponseDTO> login(@RequestParam String code) {
         try {
-            String token = authService.doLogin(code);
+            LoginResponseDTO token = authService.doLogin(code);
             if(token == null){
-                return Response.<String>builder()
+                return Response.<LoginResponseDTO>builder()
                         .code(Constants.ResponseCode.FAIL.getCode())
                         .info(Constants.ResponseCode.FAIL.getMessage())
                         .build();
             }
-            return Response.<String>builder()
+            return Response.<LoginResponseDTO>builder()
                     .code(Constants.ResponseCode.SUCCESS.getCode())
                     .info(Constants.ResponseCode.SUCCESS.getMessage())
                     .data(token)
                     .build();
         } catch (Exception e) {
-            return Response.<String>builder()
+            return Response.<LoginResponseDTO>builder()
                     .code(Constants.ResponseCode.FAIL.getCode())
                     .info(Constants.ResponseCode.FAIL.getMessage())
                     .build();

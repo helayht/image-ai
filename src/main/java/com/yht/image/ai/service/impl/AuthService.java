@@ -3,6 +3,7 @@ package com.yht.image.ai.service.impl;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
+import com.yht.image.ai.controller.dto.LoginResponseDTO;
 import com.yht.image.ai.service.IAuthService;
 import com.yht.image.ai.service.entity.UserMessageEntity;
 import com.yht.image.ai.types.common.Constants;
@@ -29,6 +30,7 @@ public class AuthService implements IAuthService {
     private static final String base64EncodedSecretKey = Base64.encodeBase64String(defaultBase64EncodedSecretKey.getBytes());
     private static final Algorithm algorithm = Algorithm.HMAC256(Base64.decodeBase64(Base64.encodeBase64String(defaultBase64EncodedSecretKey.getBytes())));
 
+    private final Integer EXPIRE_TIME = 5 * 60 * 1000;
     @Resource
     private IRedisService redisService;
     @Override
@@ -39,16 +41,16 @@ public class AuthService implements IAuthService {
         }
         // 生成验证码
         code = RandomStringUtils.randomNumeric(4);
-        redisService.setValue(userMessageEntity.getOpenId(), code, 5);
-        redisService.setValue(Constants.RedisKey.VERIFY_CODE_KEY+userMessageEntity.getOpenId(), code,5);
+        redisService.setValue(code, userMessageEntity.getOpenId(), EXPIRE_TIME);
+        redisService.setValue(userMessageEntity.getOpenId(), code,EXPIRE_TIME);
         return code;
     }
 
     @Override
-    public String doLogin(String code) {
+    public LoginResponseDTO doLogin(String code) {
         String openId = redisService.getValue(code);
 
-        if(code == null){
+        if(openId == null){
             return null;
         }
 
@@ -60,7 +62,10 @@ public class AuthService implements IAuthService {
         Map<String, Object> chaim = new HashMap<>();
         chaim.put("openId", openId);
         String token = encode(openId, 7 * 24 * 60 * 60 * 1000, chaim);
-        return token;
+        LoginResponseDTO loginResponseDTO = new LoginResponseDTO();
+        loginResponseDTO.setToken(token);
+        loginResponseDTO.setUsername(openId);
+        return loginResponseDTO;
     }
 
     /**
