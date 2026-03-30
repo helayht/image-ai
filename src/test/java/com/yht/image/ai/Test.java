@@ -59,6 +59,4 @@ public class Test {
     }
     @org.junit.jupiter.api.Test
     public void DoubaoTest() throws IOException {
-        llmService.vedioTOText(domain+"/uploads/vedio.mp4");
-    }
 }

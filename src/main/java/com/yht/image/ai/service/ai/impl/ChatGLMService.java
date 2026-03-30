@@ -11,6 +11,7 @@ import jakarta.annotation.Resource;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * @Description
@@ -39,5 +40,10 @@ public class ChatGLMService implements IAIService {
         chatResultEntity.setModelId("cogview-3-flash");
         chatResultEntity.setModelName("智谱清言");
         return chatResultEntity;
+    }
+
+    @Override
+    public ChatResultEntity imageCreatImage(ChatRequestDTO chatRequestDTO, List images, int maxImages) {
+        return null;
     }
 }
