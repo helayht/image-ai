@@ -57,7 +57,6 @@ public class Test {
        redisService.setValue("openId","code");
        System.out.println((String) redisService.getValue("openId"));
     }
-
     @org.junit.jupiter.api.Test
     public void DoubaoTest() throws IOException {
         llmService.vedioTOText(domain+"/uploads/vedio.mp4");

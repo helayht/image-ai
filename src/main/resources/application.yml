@@ -1,5 +1,5 @@
 server:
-  domain: http://hela.natapp1.cc/
+  domain: http://t9fcb52f.natappfree.cc/
   port: 8080
   tomcat:
     max-http-form-post-size: 200MB   # 解析 multipart 的总大小上限

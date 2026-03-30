@@ -49,7 +49,7 @@ public class ChatController {
             }
             Integer conversationsId = messagesService.addUserMessage(chatRequestDTO, null);
             chatRequestDTO.setConversationsId(conversationsId);
-            chatRequestDTO.setPrompt(llmService.textPromptOptimization(chatRequestDTO.getPrompt()));;
+            chatRequestDTO.setPrompt(llmService.textPromptOptimization(chatRequestDTO.getPrompt()));
             String taskId = imageService.textToImage(chatRequestDTO);
             ChatResponseDTO chatResponseDTO = new ChatResponseDTO();
             chatResponseDTO.setTaskId(taskId);
