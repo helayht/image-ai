@@ -100,7 +100,7 @@
   }
 }
 ```
-- 说明：`status` 为上表状态；`success` 时后端会写入消息表。
+- 说明：`status` 为上表状态；聊天任务在 `success` 时后端会写入消息表；模板套图任务不会写入聊天消息表。
 
 ### 3) 图生图任务（需 token）
 - 方法/路径：`POST /image/ai/api/chat/image_to_image`
@@ -120,7 +120,31 @@
   - `vedioFile`：上传视频文件
 - 响应：同文生图
 
-### 5) 消息列表（需 token）
+### 5) 模板套图任务（需 token）
+- 方法/路径：`POST /image/ai/api/chat/template_image`
+- Headers：`token: <JWT>`
+- Content-Type：`multipart/form-data`
+- 表单字段：
+  - `templateCode`：模板编号，当前支持 `poster`、`cartoon`、`product`
+  - `username`：用户名
+  - `images`：多张图片文件
+- 响应示例：
+```json
+{
+  "code": "200",
+  "info": "成功",
+  "data": {
+    "taskId": "uuid",
+    "conversationsId": null
+  }
+}
+```
+- 说明：
+  - 当前模板 prompt 由后端写死
+  - 当前模板任务底层复用豆包多图生成能力
+  - 创建任务后继续通过 `/image/ai/api/chat/tasks/{taskId}` 轮询结果
+
+### 6) 消息列表（需 token）
 - 方法/路径：`GET /image/ai/api/message/list/{conversationsId}`
 - Headers：`token: <JWT>`
 - 响应示例：
@@ -146,7 +170,7 @@
 }
 ```
 
-### 6) 会话列表（需 token）
+### 7) 会话列表（需 token）
 - 方法/路径：`GET /image/ai/api/message/conversations_list/{username}`
 - Headers：`token: <JWT>`
 - 响应示例：
@@ -160,14 +184,14 @@
 }
 ```
 
-### 7) 删除会话（需 token）
+### 8) 删除会话（需 token）
 - 方法/路径：`POST /image/ai/api/message/conversations/del`
 - Headers：`token: <JWT>`
 - Content-Type：`application/json`
 - 请求体：`[1,2,3]`（会话 ID 列表）
 - 响应：`data` 为 `true/false`
 
-### 8) 修改会话标题（需 token）
+### 9) 修改会话标题（需 token）
 - 方法/路径：`POST /image/ai/api/message/conversations/update_title`
 - Headers：`token: <JWT>`
 - Content-Type：`application/json`

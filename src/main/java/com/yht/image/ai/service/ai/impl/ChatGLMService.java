@@ -43,7 +43,7 @@ public class ChatGLMService implements IAIService {
     }
 
     @Override
-    public ChatResultEntity imageCreatImage(ChatRequestDTO chatRequestDTO, List images, int maxImages) {
+    public ChatResultEntity imageCreatImage(ChatRequestDTO chatRequestDTO, List<String> images, int maxImages) {
         return null;
     }
 }

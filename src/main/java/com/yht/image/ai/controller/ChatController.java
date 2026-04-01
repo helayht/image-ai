@@ -15,13 +15,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.net.MalformedURLException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
-import java.util.List;
-import java.util.UUID;
 
 /**
  * @Description
@@ -71,7 +64,7 @@ public class ChatController {
     public Response<TaskResponseDTO> getTask(@PathVariable String taskId) {
         try {
             TaskResponseDTO results = imageService.queryResultByTaskId(taskId);
-            if(results.getStatus().equals("success")){
+            if("success".equals(results.getStatus()) && results.getConversationsId() != null){
                 messagesService.addAssistantMessage(results.getChatResultEntityList(),taskId);
             }
             return Response.<TaskResponseDTO>builder()
@@ -134,5 +127,26 @@ public class ChatController {
                 .info(Constants.ResponseCode.SUCCESS.getMessage())
                 .data(chatResponseDTO)
                 .build();
+    }
+
+    @PostMapping("/template_image")
+    public Response<ChatResponseDTO> templateImage(@RequestParam String templateCode,
+                                                   @RequestParam String username,
+                                                   @RequestPart("images") MultipartFile[] images) {
+        try {
+            String taskId = imageService.templateImage(templateCode, username, images);
+            ChatResponseDTO chatResponseDTO = new ChatResponseDTO();
+            chatResponseDTO.setTaskId(taskId);
+            return Response.<ChatResponseDTO>builder()
+                    .code(Constants.ResponseCode.SUCCESS.getCode())
+                    .info(Constants.ResponseCode.SUCCESS.getMessage())
+                    .data(chatResponseDTO)
+                    .build();
+        } catch (Exception e) {
+            return Response.<ChatResponseDTO>builder()
+                    .code(Constants.ResponseCode.FAIL.getCode())
+                    .info(Constants.ResponseCode.FAIL.getMessage())
+                    .build();
+        }
     }
 }

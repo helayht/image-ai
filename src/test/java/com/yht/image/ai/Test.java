@@ -1,5 +1,7 @@
 package com.yht.image.ai;
 
+import com.alibaba.dashscope.exception.NoApiKeyException;
+import com.alibaba.dashscope.exception.UploadFileException;
 import com.alibaba.fastjson2.JSON;
 import com.yht.image.ai.controller.dto.ChatRequestDTO;
 import com.yht.image.ai.service.IImageService;
@@ -37,6 +39,9 @@ public class Test {
     private String domain;
     @Resource(name = "doubao-seedream-4-0")
     IAIService doubaoService;
+
+    @Resource(name = "qwen-image-2.0-pro")
+    IAIService tongYiService;
     @org.junit.jupiter.api.Test
     public void test() throws InterruptedException {
         ChatRequestDTO chatRequestDTO = new ChatRequestDTO();
@@ -58,5 +63,9 @@ public class Test {
        System.out.println((String) redisService.getValue("openId"));
     }
     @org.junit.jupiter.api.Test
-    public void DoubaoTest() throws IOException {
+    public void DoubaoTest() throws IOException, NoApiKeyException, UploadFileException {
+        ChatRequestDTO chatRequestDTO = new ChatRequestDTO();
+        chatRequestDTO.setPrompt("生成两张月亮照片");
+        tongYiService.imageCreatImage(chatRequestDTO,null,2);
+    }
 }

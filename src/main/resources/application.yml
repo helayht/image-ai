@@ -1,5 +1,5 @@
 server:
-  domain: http://t9fcb52f.natappfree.cc/
+  domain: http://ecda3969.natappfree.cc/
   port: 8080
   tomcat:
     max-http-form-post-size: 200MB   # 解析 multipart 的总大小上限
@@ -24,6 +24,7 @@ ai:
   api-key:
     chat-glm: 78d76d30bd1948899167a0bd85bab9bd.IhrSn6lWqAF6ahyO
     doubao: dd05458e-919e-435d-873e-ccc122a63375
+    tongyi: sk-f4f980d4d2874faf9b765999b9149ea5
 
 upload:
   path: D:/Java_project/ImageAI/uploads

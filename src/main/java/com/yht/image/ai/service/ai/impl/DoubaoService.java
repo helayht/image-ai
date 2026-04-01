@@ -8,14 +8,10 @@ import com.yht.image.ai.controller.dto.ChatRequestDTO;
 import com.yht.image.ai.service.ai.IAIService;
 import com.yht.image.ai.service.entity.ChatResultEntity;
 import jakarta.annotation.Resource;
-import okhttp3.ConnectionPool;
-import okhttp3.Dispatcher;
 import org.springframework.stereotype.Component;
 
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 /**
  * @Description
@@ -47,7 +43,7 @@ public class DoubaoService implements IAIService {
         return chatResultEntity;
     }
 
-    public ChatResultEntity imageCreatImage(ChatRequestDTO chatRequestDTO,List images,int maxImages){
+    public ChatResultEntity imageCreatImage(ChatRequestDTO chatRequestDTO, List<String> images, int maxImages){
         GenerateImagesRequest.SequentialImageGenerationOptions sequentialImageGenerationOptions = new GenerateImagesRequest.SequentialImageGenerationOptions();
         sequentialImageGenerationOptions.setMaxImages(maxImages);
         GenerateImagesRequest generateRequest = GenerateImagesRequest.builder()

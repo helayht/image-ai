@@ -2,7 +2,6 @@ package com.yht.image.ai.controller.dto;
 
 import com.yht.image.ai.service.entity.ChatResultEntity;
 import lombok.Data;
-import org.apache.catalina.LifecycleState;
 
 import java.util.List;
 
